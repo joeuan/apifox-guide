@@ -1,0 +1,13 @@
+/**
+ * {{{description}}}
+ * @export
+ * @enum {string}
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export enum {{classname}} {
+{{#allowableValues}}
+{{#enumVars}}
+    {{{name}}} = {{{value}}}{{^-last}},{{/-last}}
+{{/enumVars}}
+{{/allowableValues}}
+}

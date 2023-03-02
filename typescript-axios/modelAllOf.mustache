@@ -1,0 +1,7 @@
+/**
+ * @type {{classname}}{{#description}}
+ * {{{description}}}{{/description}}
+ * @export
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export type {{classname}} = {{#allOf}}{{{.}}}{{^-last}} & {{/-last}}{{/allOf}};

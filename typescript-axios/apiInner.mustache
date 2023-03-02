@@ -1,0 +1,51 @@
+{{>licenseInfo}}
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { AxiosRequestConfig } from 'axios';
+import request from '@/core/utils/request';
+import {
+{{#imports}}
+ {{classname}},
+{{/imports}}
+} from '{{apiRelativeToRoot}}{{tsModelPackage}}';
+
+{{#operations}}
+/**
+ * {{classname}} - {{#description}}
+ * {{&description}}{{/description}}
+ * @export
+ */
+export const {{classname}} = {
+    {{#operation}}
+    /**
+     * {{&notes}}
+     {{#summary}}
+     * @summary {{&summary}}
+     {{/summary}}
+     {{#allParams}}
+     * @param {{=<% %>=}}{<%&dataType%>}<%={{ }}=%> {{^required}}[{{/required}}{{paramName}}{{^required}}]{{/required}} {{description}}
+     {{/allParams}}
+     * @param {*} [options] Override http request option.
+     * @memberof {{classname}}
+     */
+    async {{nickname}}({{#allParams}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/allParams}}options?: AxiosRequestConfig) {
+        {{#hasFormParams}}
+          const formData = new FormData();
+          {{#formParams}}
+            formData.append("{{paramName}}", {{paramName}} as any);
+          {{/formParams}}
+        {{/hasFormParams}}
+        const { result } = await request<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}>({
+          url: "{{path}}",
+          method: "{{httpMethod}}",
+          {{#bodyParam}}data:{{paramName}},{{/bodyParam}}{{#hasFormParams}}data: formData,{{/hasFormParams}}
+          ...options
+        })
+        if (typeof result === 'undefined') {
+          throw new Error("unexpected: result should exist when no error");
+        }
+        return result;
+    },
+
+    {{/operation}}
+}
+{{/operations}}
